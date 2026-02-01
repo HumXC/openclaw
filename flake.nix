@@ -16,22 +16,33 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
 
+        chromiumWrapper = pkgs.writeShellScriptBin "chromium" ''
+          export XDG_RUNTIME_DIR=/tmp/runtime-$(id -u)
+          mkdir -p $XDG_RUNTIME_DIR
+          chmod 700 $XDG_RUNTIME_DIR
+
+          export WLR_BACKENDS=headless
+          export WLR_LIBINPUT_NO_DEVICES=1
+          exec ${pkgs.cage}/bin/cage -- ${pkgs.chromium}/bin/chromium "$@"
+        '';
+
         # Browser Dependencies for Playwright/Puppeteer
-        browserLibs = with pkgs; [
-          chromium
-          bashInteractive
-          cacert
-          chromium
-          curl
-          liberation_ttf
-          noto-fonts-color-emoji
-          git
-          jq
-          novnc
-          socat
-          (python3.withPackages
-            (ps: [ps.websockify]))
-        ];
+        browserLibs =
+          [chromiumWrapper]
+          ++ (with pkgs; [
+            which
+            bashInteractive
+            cacert
+            curl
+            liberation_ttf
+            noto-fonts-color-emoji
+            git
+            jq
+            novnc
+            socat
+            (python3.withPackages
+              (ps: [ps.websockify]))
+          ]);
 
         # Runtime Entrypoint
         entrypoint = pkgs.writeScript "entrypoint.sh" ''
@@ -102,6 +113,7 @@
               pkgs.gcc
               pkgs.gnumake
               pkgs.cacert
+              pkgs.cage
             ]
             ++ browserLibs;
 
