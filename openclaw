@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+workdir="$HOME/openclaw"
+subcmd="$1"
+docker run --rm -it \
+  --name openclaw-$subcmd \
+  --network host \
+  -v "$workdir/app-data:/app" \
+  -v "$workdir/agent-files:/agent-files" \
+  -e https_proxy="http://127.0.0.1:7890" \
+  -e http_proxy="http://127.0.0.1:7890" \
+  -e LANG=C.UTF-8 \
+  -e TZ=Asia/Shanghai \
+  -u $(id -u):$(id -g) \
+  openclaw:latest \
+  openclaw "$@"
