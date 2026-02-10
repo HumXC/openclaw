@@ -17,6 +17,8 @@
         pkgs = import nixpkgs {inherit system;};
 
         entrypoint = import ./nix/entrypoint.nix {inherit pkgs;};
+        openclaw-update = import ./nix/openclaw-update.nix {inherit pkgs;};
+        openclaw-restart = import ./nix/openclaw-restart.nix {inherit pkgs;};
         chromium-cage = import ./nix/chromium-cage.nix {inherit pkgs;};
         wayvnc-wrap = import ./nix/wayvnc-wrap.nix {inherit pkgs;};
 
@@ -57,6 +59,8 @@
             [
               wayvnc-wrap
               chromium-cage
+              openclaw-update
+              openclaw-restart
 
               pkgs.which
               pkgs.dockerTools.fakeNss
