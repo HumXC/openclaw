@@ -62,6 +62,8 @@
               openclaw-update
               openclaw-restart
 
+              pkgs.glibc
+              pkgs.glibc.bin
               pkgs.which
               pkgs.dockerTools.fakeNss
               pkgs.bashInteractive
@@ -78,7 +80,6 @@
               pkgs.cacert
               pkgs.cage
               pkgs.cmake
-              pkgs.glibc_multi
               pkgs.findutils
               pkgs.gawk
               pkgs.busybox
@@ -89,6 +90,8 @@
             mkdir -p app
             mkdir -p tmp
             chmod 1777 tmp
+            mkdir -p usr/bin
+            ln -s ${pkgs.coreutils}/bin/env usr/bin/env
           '';
 
           config = {

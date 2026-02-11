@@ -4,6 +4,7 @@ subcmd="$1"
 docker run --rm -it \
   --name openclaw-$subcmd \
   --network host \
+  --env-file .env \
   -v "$workdir/app-data:/app" \
   -v "$workdir/agent-files:/agent-files" \
   -e https_proxy="http://127.0.0.1:7890" \

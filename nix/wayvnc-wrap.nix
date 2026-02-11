@@ -24,8 +24,7 @@ pkgs.writeShellScriptBin "wayvnc" ''
   done
 
   if [ -z "$MAX_AVAILABLE" ]; then
-    echo "No available Wayland display found" >&2
-    exit 1
+    exec "$WAYVNC" "$@"
   fi
 
   export WAYLAND_DISPLAY="wayland-$MAX_AVAILABLE"

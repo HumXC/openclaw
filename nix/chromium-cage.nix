@@ -16,7 +16,11 @@ pkgs.writeShellScriptBin "chromium" ''
       exec ${pkgs.cage}/bin/cage -s -- ${pkgs.chromium}/bin/chromium \
         --ozone-platform=wayland \
         --enable-features=WaylandWindowDecorations \
-        --no-sandbox "$@"
+        --no-sandbox \
+        --disable-blink-features=AutomationControlled \
+        --disable-infobars \
+        --window-size=1920,1080 \
+        "$@"
       ;;
   esac
 ''
