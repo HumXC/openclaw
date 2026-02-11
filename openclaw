@@ -9,6 +9,8 @@ docker run --rm -it \
   -v "$workdir/agent-files:/agent-files" \
   -e https_proxy="http://127.0.0.1:7890" \
   -e http_proxy="http://127.0.0.1:7890" \
+  -e HTTPS_PROXY="http://127.0.0.1:7890" \
+  -e HTTP_PROXY="http://127.0.0.1:7890" \
   -e LANG=C.UTF-8 \
   -e TZ=Asia/Shanghai \
   -u $(id -u):$(id -g) \

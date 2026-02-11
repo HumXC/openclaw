@@ -21,6 +21,10 @@ pkgs.writeScript "entrypoint.sh" ''
       ${pkgs.pnpm}/bin/pnpm install -g openclaw@latest
   fi
 
+  if [ "$#" -gt 0 ]; then
+      exec "$@"
+  fi
+
   cleanup() {
       echo "Stopping..."
       [ -f "$PID_FILE" ] && kill $(cat "$PID_FILE") 2>/dev/null
@@ -33,11 +37,7 @@ pkgs.writeScript "entrypoint.sh" ''
       rm -f "$RESTART_FLAG"
 
       echo "Starting openclaw..."
-      if [ "$#" -gt 0 ]; then
-          "$@" &
-      else
-          openclaw gateway &
-      fi
+      openclaw gateway &
 
       # 写入 PID
       echo ''$! > "$PID_FILE"
